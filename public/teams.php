@@ -10,11 +10,12 @@ function pageController()
 
 	$sortQuery = Input::get('sort_by');
 	$searchQuery = Input::get('team_or_stadium');
-	if (Input::has('team_or_stadium') && Input::has('sort_by')) {
-	$sql .= " WHERE (name LIKE '%$searchQuery%' OR stadium LIKE '%$searchQuery%') ORDER BY $sortQuery ASC";
-	} elseif (Input::has('team_or_stadium') && !Input::has('sort_by')) {
+
+	if (Input::has('team_or_stadium')) {
 		$sql .= " WHERE name LIKE '%$searchQuery%' OR stadium LIKE '%$searchQuery%'";
-	} elseif (Input::has('sort_by') && !Input::has('team_or_stadium')) {
+	}
+
+	if (Input::has('sort_by')) {
 		$sql .= " ORDER BY $sortQuery ASC";
 	}
 
@@ -23,10 +24,12 @@ function pageController()
 
 	return [
 		'title' => 'Teams',
+		'query' => $searchQuery,
 	];
 }
 extract(pageController());
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -105,7 +108,7 @@ extract(pageController());
 						<input type="checkbox" name="teams[]" value="3">
 					</td>
 					<td>
-						<a href="team-details.php?team_id=2">
+						<a href="team-details.php?team_id=3">
 							New York Yankees
 						</a>
 				    </td>
@@ -117,7 +120,7 @@ extract(pageController());
 						<input type="checkbox" name="teams[]" value="4">
 					</td>
 					<td>
-						<a href="team-details.php?team_id=2">
+						<a href="team-details.php?team_id=4">
 							Philadelphia Phillies
 						</a>
 				    </td>
