@@ -4,15 +4,13 @@ require __DIR__ . '/../src/Input.php';
 function pageController()
 {
 	$teams = Input::get('teams');
-	var_dump($teams);
 
 	// Write the query to retrieve the details of all of the teams
-	$sql = "SELECT * FROM teams WHERE team_id = '$teams';";
+	$sql = "SELECT * FROM teams";
 
 	if (Input::has('team_or_stadium')) {
 		$searchQuery = Input::get('team_or_stadium');
-		var_dump($searchQuery);
-		$sql = "SELECT * FROM teams WHERE name LIKE '%$searchQuery%' OR stadium LIKE '%$searchQuery%';";
+		$sql .= " WHERE name LIKE '%$searchQuery%' OR stadium LIKE '%$searchQuery%';";
 	// Concatenate the WHERE clause that filters the teams by similar names
 	// or stadiums
 	}
