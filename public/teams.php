@@ -8,11 +8,14 @@ function pageController()
 	// Write the query to retrieve the details of all of the teams
 	$sql = "SELECT * FROM teams";
 
-	if (Input::has('team_or_stadium')) {
-		$searchQuery = Input::get('team_or_stadium');
-		$sql .= " WHERE name LIKE '%$searchQuery%' OR stadium LIKE '%$searchQuery%';";
-	// Concatenate the WHERE clause that filters the teams by similar names
-	// or stadiums
+	$sortQuery = Input::get('sort_by');
+	$searchQuery = Input::get('team_or_stadium');
+	if (Input::has('team_or_stadium') && Input::has('sort_by')) {
+	$sql .= " WHERE (name LIKE '%$searchQuery%' OR stadium LIKE '%$searchQuery%') ORDER BY $sortQuery ASC";
+	} elseif (Input::has('team_or_stadium') && !Input::has('sort_by')) {
+		$sql .= " WHERE name LIKE '%$searchQuery%' OR stadium LIKE '%$searchQuery%'";
+	} elseif (Input::has('sort_by') && !Input::has('team_or_stadium')) {
+		$sql .= " ORDER BY $sortQuery ASC";
 	}
 
 	// Copy the query and test it in SQL Pro
@@ -61,8 +64,15 @@ extract(pageController());
 				<thead>
 				<tr>
 					<th>Delete</th>
-					<th>Team</th>
-					<th>League</th>
+					<th>
+						<a href="?sort_by=name">Team</a>
+					</th>
+					<th>
+						<a href="?sort_by=stadium">Stadium</a>
+					</th>
+					<th>
+						<a href="?sort_by=league">League</a>
+					</th>
 				</tr>
 				</thead>
 				<tbody>
@@ -75,6 +85,7 @@ extract(pageController());
 							Red Sox
 						</a>
 					</td>
+					<td>Fenway Park</td>
 					<td>American</td>
 				</tr>
 				<tr>
@@ -85,8 +96,33 @@ extract(pageController());
 						<a href="team-details.php?team_id=2">
 							Texas Rangers
 						</a>
+				    </td>
+				    <td>Global Life Park</td>
+				    <td>American</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="checkbox" name="teams[]" value="3">
 					</td>
-					<td>American</td>
+					<td>
+						<a href="team-details.php?team_id=2">
+							New York Yankees
+						</a>
+				    </td>
+				    <td>Yankee Stadium</td>
+				    <td>American</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="checkbox" name="teams[]" value="4">
+					</td>
+					<td>
+						<a href="team-details.php?team_id=2">
+							Philadelphia Phillies
+						</a>
+				    </td>
+				    <td>Citizens Bank Park</td>
+				    <td>American</td>
 				</tr>
 				</tbody>
 			</table>
