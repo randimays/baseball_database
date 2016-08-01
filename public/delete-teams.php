@@ -3,8 +3,8 @@ require __DIR__ . '/../src/Input.php';
 
 function pageController()
 {
-    $teams = Input::get('teams');  // You'll get an array with team IDs
 
+    $teams = Input::get('teams');  // You'll get an array with team IDs
     $teamIdsString = implode(",", $teams);
 
     $delete = "DELETE FROM teams WHERE id IN ($teamIdsString);";

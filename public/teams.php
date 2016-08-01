@@ -4,12 +4,16 @@ require __DIR__ . '/../src/Input.php';
 function pageController()
 {
 	$teams = Input::get('teams');
-
-	// Write the query to retrieve the details of all of the teams
-	$sql = "SELECT * FROM teams";
-
+	$page = Input::get('page', 1);
 	$sortQuery = Input::get('sort_by');
 	$searchQuery = Input::get('team_or_stadium');
+	$sql = "SELECT * FROM teams";
+
+	if ($page < 1) {
+		$page = 1;
+	}
+	
+	$offset = ($page - 1) * 5;
 
 	if (Input::has('team_or_stadium')) {
 		$sql .= " WHERE name LIKE '%$searchQuery%' OR stadium LIKE '%$searchQuery%'";
@@ -17,6 +21,10 @@ function pageController()
 
 	if (Input::has('sort_by')) {
 		$sql .= " ORDER BY $sortQuery ASC";
+	}
+
+	if (Input::has('page')) {
+		$sql .= " LIMIT 5 OFFSET $offset";
 	}
 
 	// Copy the query and test it in SQL Pro
@@ -79,55 +87,113 @@ extract(pageController());
 				</tr>
 				</thead>
 				<tbody>
-				<tr>
-					<td>
-						<input type="checkbox" name="teams[]" value="1">
-					</td>
-					<td>
-						<a href="team-details.php?team_id=1">
-							Red Sox
-						</a>
-					</td>
-					<td>Fenway Park</td>
-					<td>American</td>
-				</tr>
-				<tr>
-					<td>
-						<input type="checkbox" name="teams[]" value="2">
-					</td>
-					<td>
-						<a href="team-details.php?team_id=2">
-							Texas Rangers
-						</a>
-				    </td>
-				    <td>Global Life Park</td>
-				    <td>American</td>
-				</tr>
-				<tr>
-					<td>
-						<input type="checkbox" name="teams[]" value="3">
-					</td>
-					<td>
-						<a href="team-details.php?team_id=3">
-							New York Yankees
-						</a>
-				    </td>
-				    <td>Yankee Stadium</td>
-				    <td>American</td>
-				</tr>
-				<tr>
-					<td>
-						<input type="checkbox" name="teams[]" value="4">
-					</td>
-					<td>
-						<a href="team-details.php?team_id=4">
-							Philadelphia Phillies
-						</a>
-				    </td>
-				    <td>Citizens Bank Park</td>
-				    <td>American</td>
-				</tr>
+					<tr>
+						<td>
+							<input type="checkbox" name="teams[]" value="1">
+						</td>
+						<td>
+							<a href="team-details.php?team_id=1">Red Sox</a>
+						</td>
+						<td>Fenway Park</td>
+						<td>American</td>
+					</tr>
+					<tr>
+						<td>
+							<input type="checkbox" name="teams[]" value="2">
+						</td>
+						<td>
+							<a href="team-details.php?team_id=2">Texas Rangers</a>
+						</td>
+						<td>Global Life Park</td>
+						<td>American</td>
+					</tr>
+					<tr>
+						<td>
+							<input type="checkbox" name="teams[]" value="3">
+						</td>
+						<td>
+							<a href="team-details.php?team_id=3">New York Yankees</a>
+						</td>
+						<td>Yankee Stadium</td>
+						<td>American</td>
+					</tr>
+					<tr>
+						<td>
+							<input type="checkbox" name="teams[]" value="4">
+						</td>
+						<td>
+							<a href="team-details.php?team_id=4">Philadelphia Phillies</a>
+						</td>
+						<td>Citizens Bank Park</td>
+						<td>National</td>
+					</tr>
+					<tr>
+						<td>
+							<input type="checkbox" name="teams[]" value="4">
+						</td>
+						<td>
+							<a href="team-details.php?team_id=5">Chicago Cubs</a>
+						</td>
+						<td>Wrigley Field</td>
+						<td>National</td>
+					</tr>
+					<tr>
+						<td>
+							<input type="checkbox" name="teams[]" value="4">
+						</td>
+						<td>
+							<a href="team-details.php?team_id=6">Cincinnati Reds</a>
+						</td>
+						<td>Great American Ball Park</td>
+						<td>National</td>
+					</tr>
+					<tr>
+						<td>
+							<input type="checkbox" name="teams[]" value="4">
+						</td>
+						<td>
+							<a href="team-details.php?team_id=7">Los Angeles Dodgers</a>
+						</td>
+						<td>Dodger Stadium</td>
+						<td>National</td>
+					</tr>
+					<tr>
+						<td>
+							<input type="checkbox" name="teams[]" value="4">
+						</td>
+						<td>
+							<a href="team-details.php?team_id=8">St. Louis Cardinals</a>
+						</td>
+						<td>Busch Stadium</td>
+						<td>National</td>
+					</tr>
 				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="4">
+						  <!-- The values in this pagination control indicate you're currently viewing page 2 -->
+							<nav aria-label="Page navigation" class="text-center">
+								<ul class="pagination">
+									<li>
+										<a href="?page=1" aria-label="Previous">
+											<span aria-hidden="true">&laquo;</span>
+										</a>
+									</li>
+									<li><a href="?page=1">1</a></li>
+									<li><a href="?page=2">2</a></li>
+									<li><a href="?page=3">3</a></li>
+									<li><a href="?page=4">4</a></li>
+									<li><a href="?page=5">5</a></li>
+									<li>
+										<a href="?page=3" aria-label="Next">
+											<span aria-hidden="true">&raquo;</span>
+										</a>
+									</li>
+								</ul>
+							</nav>
+						</td>
+					</tr>
+				</tfoot>
 			</table>
 			<button type="submit" class="btn btn-danger">
 				<span class="glyphicon glyphicon-trash"></span>
