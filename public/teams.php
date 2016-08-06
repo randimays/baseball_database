@@ -1,4 +1,7 @@
 <?php
+
+// This is a first of series of exercises to illustrate how to relate the interface of a CRUD application with their corresponding SQL statements. You will write the queries for a small application to keep track of the results of MLB games.
+
 require __DIR__ . '/../src/Input.php';
 
 function pageController()

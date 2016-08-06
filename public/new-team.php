@@ -1,4 +1,6 @@
 <?php
+
+// Write the insert statement to insert a team. Either interpolate or concatenate the PHP variables. Copy the resulting query and verify that it runs using the terminal. 
 require __DIR__ . '/../src/Input.php';
 
 function pageController() {
